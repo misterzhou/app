@@ -33,6 +33,10 @@ public abstract class Token implements AppJSONCodecObject {
         this.token = token;
     }
 
+    public void refreshRemainExpiredTime() {
+        this.remainExpiredTime = grantType.getExpiredTime();
+    }
+
     @Override
     public void initWithJSON(AppJSONObject jsonObject) {
         this.grantType = AuthGrantType.parse(jsonObject.getByteValue("grantType", AuthGrantType.client_token.getValue()));

@@ -1,5 +1,6 @@
 package org.personal.app.auth;
 
+import org.personal.app.commons.AppException;
 import org.personal.app.commons.auth.*;
 import org.personal.app.framework.auth.AuthManager;
 import org.personal.app.framework.auth.AuthResource;
@@ -48,11 +49,26 @@ public class AppAuthManager implements AuthManager {
 
     @Override
     public Token refreshToken(Token token) {
-        return null;
+        checkToken(token);
+        if (token.getRemainExpiredTime() < token.getGrantType().getExpiredTime() / 3) {
+            token.setToken(TokenUtils.refreshToken(token));
+            token.refreshRemainExpiredTime();
+        }
+        return token;
     }
 
     @Override
     public Token refreshToken(String tokenStr) {
         return null;
+    }
+
+    @Override
+    public void checkToken(Token token) {
+        if (token == null) {
+            throw AppException.newInvalidTokenException();
+        }
+        if (token.getRemainExpiredTime() < 5000L) {
+            throw AppException.newTokenExpiresException();
+        }
     }
 }

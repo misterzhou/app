@@ -19,4 +19,6 @@ public interface AuthManager {
 
     Token refreshToken(String tokenStr);
 
+    void checkToken(Token token);
+
 }

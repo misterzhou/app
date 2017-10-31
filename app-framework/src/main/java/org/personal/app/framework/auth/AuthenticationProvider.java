@@ -1,8 +1,7 @@
 package org.personal.app.framework.auth;
 
 import org.personal.app.commons.auth.Token;
-
-import javax.servlet.http.HttpServletRequest;
+import org.personal.app.framework.request.AppRequest;
 
 /**
  * Created at: 2017-10-29 10:44
@@ -11,10 +10,12 @@ import javax.servlet.http.HttpServletRequest;
  */
 public interface AuthenticationProvider {
 
-    AuthResource verifyToken(HttpServletRequest request);
+    AuthResource verifyToken(AppRequest request);
 
     AuthResource verifyToken(AuthenticationType type, String tokenStr);
 
     Token refreshToken(AuthenticationType type, Token token);
+
+    void checkToken(Token token);
 
 }

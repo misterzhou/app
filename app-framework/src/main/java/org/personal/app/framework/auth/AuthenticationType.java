@@ -7,6 +7,7 @@ package org.personal.app.framework.auth;
  */
 public enum AuthenticationType {
 
+    NULL_AUTH("Null"),
     APP_AUTH("AppAuth");
 
     private final String value;

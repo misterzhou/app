@@ -1,6 +1,8 @@
 package org.personal.app.framework.request;
 
 import org.personal.app.commons.utils.IPUtils;
+import org.personal.app.framework.auth.AuthenticationType;
+import org.springframework.http.HttpHeaders;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -13,6 +15,7 @@ import java.util.Map;
  */
 public class AppRequest {
 
+    public static final String PARAM_TOKEN = HttpHeaders.AUTHORIZATION.toLowerCase();
     public static final String REQUESTID_HEADER = "X-requestID";
     public static final String REMOTEIP_HEADER = "X-RemoteIP";
     public static final String X_APP_UID_HEADER = "X-App-UID";
@@ -33,7 +36,7 @@ public class AppRequest {
         return request.getHeader(name);
     }
 
-    public Object getParameter(String name) {
+    public String getParameter(String name) {
         return request.getParameter(name);
     }
 
@@ -52,5 +55,18 @@ public class AppRequest {
 
     public String getUdid() {
         return request.getHeader(X_APP_UDID_HEADER);
+    }
+
+    public AuthenticationType getAuthenticationType() {
+        String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
+        if (authorization == null) {
+            authorization = request.getParameter(PARAM_TOKEN);
+        }
+
+        AuthenticationType result = AuthenticationType.APP_AUTH;
+        if (authorization != null) {
+            result = AuthenticationType.parseTypeFromAuthHeader(authorization);
+        }
+        return result;
     }
 }

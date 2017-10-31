@@ -1,6 +1,5 @@
 package org.personal.app.framework.auth;
 
-import org.personal.app.commons.AppException;
 import org.personal.app.commons.auth.AuthGrantType;
 import org.personal.app.commons.auth.Token;
 
@@ -63,15 +62,6 @@ public class AuthResource {
     public AuthResource setUdid(String udid) {
         this.udid = udid;
         return this;
-    }
-
-    public void checkToken() {
-        if (token == null) {
-            throw AppException.newInvalidTokenException();
-        }
-        if (token.getRemainExpiredTime() < 1000L) {
-            throw AppException.newTokenExpiresException();
-        }
     }
 
 }

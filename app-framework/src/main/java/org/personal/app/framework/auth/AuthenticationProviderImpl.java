@@ -1,6 +1,7 @@
 package org.personal.app.framework.auth;
 
 import org.personal.app.commons.auth.Token;
+import org.personal.app.framework.request.AppRequest;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
@@ -8,7 +9,6 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,16 +20,14 @@ import java.util.Map;
 @Service
 public class AuthenticationProviderImpl implements AuthenticationProvider, ApplicationContextAware, InitializingBean {
 
-    private static final String PARAM_TOKEN = HttpHeaders.AUTHORIZATION.toLowerCase();
-
     private ApplicationContext context;
     private Map<AuthenticationType, AuthManager> authManagers;
 
     @Override
-    public AuthResource verifyToken(HttpServletRequest request) {
+    public AuthResource verifyToken(AppRequest request) {
         String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
         if (authorization == null) {
-            authorization = request.getParameter(PARAM_TOKEN);
+            authorization = request.getParameter(AppRequest.PARAM_TOKEN);
         }
 
         AuthResource result = null;
@@ -48,7 +46,7 @@ public class AuthenticationProviderImpl implements AuthenticationProvider, Appli
     public AuthResource verifyToken(AuthenticationType type, String tokenStr) {
         AuthManager authManager = authManagers.get(type);
         if (authManager == null) {
-            return null;
+            authManager = authManagers.get(AuthenticationType.NULL_AUTH);
         }
 
         return authManager.verifyToken(tokenStr);
@@ -58,10 +56,19 @@ public class AuthenticationProviderImpl implements AuthenticationProvider, Appli
     public Token refreshToken(AuthenticationType type, Token token) {
         AuthManager authManager = authManagers.get(type);
         if (authManager == null) {
-            return null;
+            authManager = authManagers.get(AuthenticationType.NULL_AUTH);
         }
 
         return authManager.refreshToken(token);
+    }
+
+    @Override
+    public void checkToken(Token token) {
+        AuthManager authManager = authManagers.get(token.getGrantType());
+        if (authManager == null) {
+            authManager = authManagers.get(AuthenticationType.NULL_AUTH);
+        }
+        authManager.checkToken(token);
     }
 
     @Override
