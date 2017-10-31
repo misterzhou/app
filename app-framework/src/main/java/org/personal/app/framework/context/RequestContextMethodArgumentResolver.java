@@ -11,7 +11,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
  *
  * @author guojing
  */
-public class CustomMethodArgumentResolver implements HandlerMethodArgumentResolver {
+public class RequestContextMethodArgumentResolver implements HandlerMethodArgumentResolver {
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {

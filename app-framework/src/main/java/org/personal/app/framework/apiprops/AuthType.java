@@ -1,5 +1,8 @@
 package org.personal.app.framework.apiprops;
 
+import org.apache.commons.lang.ArrayUtils;
+import org.personal.app.commons.auth.AuthGrantType;
+
 /**
  * Created at: 2017-10-22 11:32
  *
@@ -10,18 +13,34 @@ package org.personal.app.framework.apiprops;
 public enum AuthType {
 
     /**
-     * 可选，有则验证，无则不验证
+     * 不需要认证
      */
-    OPTIONAL(),
-    /**
-     * 外部需要认证
-     */
-    OUTER(),
-    /**
-     * 必须验证
-     */
-    REQUIRED();
+    anonymous(),
+    client(AuthGrantType.client_token),
+    server(AuthGrantType.server_token),
+    all(AuthGrantType.client_token, AuthGrantType.server_token);
 
-    AuthType(){}
+    private final AuthGrantType[] grantTypes;
+
+    AuthType(AuthGrantType... grantTypes){
+        this.grantTypes = grantTypes;
+    }
+
+    public boolean support(AuthGrantType grantType) {
+        if (this.grantTypes == null ||this.grantTypes.length == 0) {
+            return true;
+        }
+        for (AuthGrantType type : this.grantTypes) {
+            if (type == grantType) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public boolean needAuth() {
+        return ArrayUtils.isNotEmpty(grantTypes);
+    }
 
 }

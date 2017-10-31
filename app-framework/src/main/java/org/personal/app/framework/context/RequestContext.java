@@ -1,8 +1,8 @@
 package org.personal.app.framework.context;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import org.personal.app.framework.request.AppRequest;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,9 +22,9 @@ public class RequestContext {
      */
     private String currentUid;
     /**
-     * 设备号
+     * 设备标识
      */
-    private String uuid;
+    private String udid;
     private String ip;
     /**
      * 平台
@@ -33,7 +33,9 @@ public class RequestContext {
     private Map<String, Object> attributes;
 
     @JSONField(serialize = false)
-    private transient HttpServletRequest originRequest;
+    private transient AppRequest appRequest;
+
+    public RequestContext() {}
 
     public RequestContext(String requestID) {
         this.requestID = requestID;
@@ -45,9 +47,9 @@ public class RequestContext {
         this.currentUid = currentUid;
     }
 
-    public RequestContext(String requestID, String currentUid, String uuid) {
+    public RequestContext(String requestID, String currentUid, String udid) {
         this(requestID, currentUid);
-        this.uuid = uuid;
+        this.udid = udid;
     }
 
     public String getCurrentUid() {
@@ -59,12 +61,12 @@ public class RequestContext {
         return this;
     }
 
-    public String getUuid() {
-        return uuid;
+    public String getUdid() {
+        return udid;
     }
 
-    public RequestContext setUuid(String uuid) {
-        this.uuid = uuid;
+    public RequestContext setUdid(String udid) {
+        this.udid = udid;
         return this;
     }
 
@@ -104,12 +106,12 @@ public class RequestContext {
         return this;
     }
 
-    public HttpServletRequest getOriginRequest() {
-        return originRequest;
+    public AppRequest getAppRequest() {
+        return appRequest;
     }
 
-    public RequestContext setOriginRequest(HttpServletRequest originRequest) {
-        this.originRequest = originRequest;
+    public RequestContext setAppRequest(AppRequest appRequest) {
+        this.appRequest = appRequest;
         return this;
     }
 }

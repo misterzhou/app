@@ -18,14 +18,14 @@ public @interface BaseInfo {
 
     String desc() default "";
 
-    ApiStatus status();
+    ApiStatus status() default ApiStatus.PUBLIC;
 
-    AuthType authType() default AuthType.REQUIRED;
+    AuthType authType() default AuthType.all;
 
     /**
      * 接口频次限制
      */
-    RateLimitType[] rateLimit() default {};
+    RateLimit[] rateLimits() default {};
 
     boolean needSSL() default false;
 

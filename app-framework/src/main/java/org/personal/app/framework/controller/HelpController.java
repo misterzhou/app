@@ -1,10 +1,11 @@
-package org.personal.app.user;
+package org.personal.app.framework.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import org.personal.app.framework.apiprops.AuthType;
+import org.personal.app.framework.apiprops.BaseInfo;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * Created at: 2017-10-21 23:34
@@ -13,10 +14,11 @@ import javax.servlet.http.HttpServletRequest;
  */
 @RestController
 @RequestMapping("/help")
-public class TestController {
+public class HelpController {
 
-    @RequestMapping("ping")
-    public JSONObject ping(HttpServletRequest request) {
+    @RequestMapping(value = "/ping", method = RequestMethod.GET)
+    @BaseInfo(desc = "ping", authType = AuthType.anonymous)
+    public JSONObject ping() {
         JSONObject result = new JSONObject();
         result.put("msg", "pong");
         result.put("systemTime", System.currentTimeMillis());
