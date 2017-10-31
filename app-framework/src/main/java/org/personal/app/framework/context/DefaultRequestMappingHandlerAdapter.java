@@ -4,11 +4,9 @@ import org.personal.app.commons.AppException;
 import org.personal.app.commons.utils.AppStringUtils;
 import org.personal.app.framework.apiprops.AuthType;
 import org.personal.app.framework.apiprops.BaseInfo;
-import org.personal.app.framework.apiprops.RateLimit;
 import org.personal.app.framework.auth.AuthResource;
 import org.personal.app.framework.auth.AuthenticationProvider;
 import org.personal.app.framework.request.AppRequest;
-import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
@@ -39,30 +37,28 @@ public class DefaultRequestMappingHandlerAdapter extends RequestMappingHandlerAd
             return super.handleInternal(request, response, handlerMethod);
         }
 
+        AppRequest appRequest = new AppRequest(request);
         Method method = handlerMethod.getMethod();
         BaseInfo baseInfo = method.isAnnotationPresent(BaseInfo.class) ? method.getAnnotation(BaseInfo.class) : null;
         //未加BaseInfo注解默认为: AuthType.client
         AuthType authType = baseInfo != null ? baseInfo.authType() : AuthType.client;
-        AuthResource authResource = authenticationProvider.verifyToken(request);
+        AuthResource authResource = authenticationProvider.verifyToken(appRequest);
         //不需要认证的接口不检查token
         if (authType.needAuth()) {
             if (authType.support(authResource.getGrantType())) {
-                authResource.checkToken();
+                authenticationProvider.checkToken(authResource.getToken());
             } else {
                 throw AppException.newInvalidTokenException();
             }
         }
 
-        AppRequest appRequest = new AppRequest(request);
         RequestContext rc = ThreadLocalContext.getRequestContext();
+        rc.setAppRequest(appRequest);
         rc.setCurrentUid(authResource.getUid());
         rc.setIp(appRequest.getRemoteIp());
-        rc.setUdid(appRequest.getUdid() != null ? appRequest.getUdid() : authResource.getUdid());
-
-        RateLimit[] rateLimits = null;
-        if (baseInfo != null && baseInfo.rateLimits().length == 0) {
-            rateLimits = baseInfo.rateLimits();
-
+        String udid = appRequest.getUdid() != null ? appRequest.getUdid() : authResource.getUdid();
+        if (AppStringUtils.isNotBlank(udid)) {
+            rc.setUdid(udid);
         }
 
         return super.handleInternal(request, response, handlerMethod);

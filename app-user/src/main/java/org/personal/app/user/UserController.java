@@ -32,17 +32,14 @@ public class UserController {
 
     @RequestMapping(value = "/show", method = RequestMethod.POST)
     @BaseInfo(desc = "查询用户信息", status = ApiStatus.PUBLIC, authType = AuthType.anonymous)
-    public JSONObject show(RequestContext rc, @RequestParam(name = "uid") String uid) {
-        JSONObject result = new JSONObject();
-        result.put("uid", uid);
-        result.put("token", TokenUtils.generateClientToken(uid, rc.getUdid()));
-        return result;
+    public User show(RequestContext rc, @RequestParam(name = "uid") String uid) {
+        return new User(uid, "guojing");
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     @BaseInfo(desc = "更新用户信息", status = ApiStatus.PUBLIC, authType = AuthType.all)
-    public JSONObject update(RequestContext rc, @RequestBody User user) {
-        return user.toJSONObject();
+    public User update(RequestContext rc, @RequestBody User user) {
+        return user;
     }
 
     @RequestMapping(value = "/test", method = RequestMethod.POST)

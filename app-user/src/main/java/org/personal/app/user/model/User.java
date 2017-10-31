@@ -27,6 +27,11 @@ public class User implements AppJSONCodecObject {
         this.uid = uid;
     }
 
+    public User(String uid, String username) {
+        this.uid = uid;
+        this.username = username;
+    }
+
     public User(AppJSONObject jsonObj) {
         initWithJSON(jsonObj);
     }
