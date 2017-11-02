@@ -15,12 +15,7 @@ import java.lang.annotation.Target;
 public @interface RateLimit {
 
     /**
-     * 限制类型
-     */
-    RateLimitType type();
-
-    /**
-     * 配置
+     * 频次限制配置
      */
     RateLimitConfig[] configs();
 

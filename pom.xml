@@ -12,18 +12,12 @@
 		<module>app-user</module>
         <module>app-framework</module>
         <module>app-auth</module>
+        <module>app-ratelimit</module>
     </modules>
 	<packaging>pom</packaging>
 
-	<name>${artifactId}</name>
+	<name>${project.artifactId}</name>
 	<description>app basic function</description>
-
-	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>1.5.8.RELEASE</version>
-		<relativePath/> <!-- lookup parent from repository -->
-	</parent>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -33,6 +27,15 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <!-- Import dependency management from Spring Boot -->
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>1.5.8.RELEASE</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
             <dependency>
                 <groupId>commons-collections</groupId>
                 <artifactId>commons-collections</artifactId>
@@ -116,5 +119,25 @@
             </plugin>
 		</plugins>
 	</build>
+
+    <repositories>
+        <repository>
+            <id>spring-releases</id>
+            <name>Spring Releases</name>
+            <url>https://repo.spring.io/libs-release</url>
+        </repository>
+        <repository>
+            <id>maven-ali</id>
+            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+                <checksumPolicy>fail</checksumPolicy>
+            </snapshots>
+        </repository>
+    </repositories>
 
 </project>

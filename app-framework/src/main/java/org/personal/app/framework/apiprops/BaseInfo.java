@@ -23,9 +23,9 @@ public @interface BaseInfo {
     AuthType authType() default AuthType.all;
 
     /**
-     * 接口频次限制
+     * 是否启用接口频次限制
      */
-    RateLimit[] rateLimits() default {};
+    boolean rateLimit() default false;
 
     boolean needSSL() default false;
 

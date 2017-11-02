@@ -2,22 +2,21 @@ package org.personal.app.framework.apiprops;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.util.concurrent.TimeUnit;
 
 /**
- * Created at: 2017-10-29 13:20
+ * Created at: 2017-11-01 23:59
  *
  * @author guojing
  */
 @Retention(RetentionPolicy.RUNTIME)
-public @interface RateLimitConfig {
+public @interface LimitTimesConfig {
 
     /**
-     * 限制类型
+     * 单位时间最大请求数
      */
-    RateLimitType type();
-    /**
-     * 单位时间的限制次数配置
-     */
-    LimitTimesConfig[] rateTimes();
+    int value();
+
+    TimeUnit timeUnit() default TimeUnit.HOURS;
 
 }

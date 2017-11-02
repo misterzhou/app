@@ -28,10 +28,6 @@ public class AppRequest {
         this.request = request;
     }
 
-    public String getUri() {
-        return request.getRequestURI();
-    }
-
     public String getHeader(String name) {
         return request.getHeader(name);
     }
@@ -42,6 +38,10 @@ public class AppRequest {
 
     public Map<String, String[]> getParameterMap() {
         return request.getParameterMap();
+    }
+
+    public String getRequestAPI() {
+        return request.getRequestURI();
     }
 
     public String getRequestURI() {

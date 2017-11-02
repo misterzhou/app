@@ -11,6 +11,8 @@ import org.personal.app.framework.auth.AuthenticationProvider;
 import org.personal.app.framework.context.RequestContext;
 import org.personal.app.framework.context.ThreadLocalContext;
 import org.personal.app.framework.request.AppRequest;
+import org.personal.app.ratelimit.api.IRateLimitService;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
@@ -28,10 +30,14 @@ import java.lang.reflect.Method;
  * @author guojing
  */
 @Component
+@Order(1)
 public class AuthInterceptor implements HandlerInterceptor {
 
     @Resource
     AuthenticationProvider authenticationProvider;
+
+    @Resource
+    IRateLimitService rateLimitService;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -61,10 +67,10 @@ public class AuthInterceptor implements HandlerInterceptor {
             rc.setUdid(udid);
         }
 
-        RateLimit[] rateLimits = null;
-        if (baseInfo != null && baseInfo.rateLimits().length > 0) {
-            rateLimits = baseInfo.rateLimits();
-
+        boolean enableRateLimit = baseInfo != null && baseInfo.rateLimit();
+        RateLimit rateLimit = method.isAnnotationPresent(RateLimit.class) ? method.getAnnotation(RateLimit.class) : null;
+        if (enableRateLimit && rateLimit != null && rateLimit.configs().length > 0) {
+            rateLimitService.checkRateLimit(rc, rateLimit);
         }
 
         if (authType.needAuth()) {

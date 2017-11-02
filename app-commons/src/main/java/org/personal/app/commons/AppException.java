@@ -41,6 +41,10 @@ public class AppException extends RuntimeException {
         return new AppException(errorCode, errorMsg);
     }
 
+    public static AppException newParamException(String param) {
+        return new AppException(ErrorCode.PARAM_ERROR, param);
+    }
+
     public static AppException newInvalidTokenException() {
         return new AppException(ErrorCode.AUTH_FAIL, "认证失败，请重试");
     }
