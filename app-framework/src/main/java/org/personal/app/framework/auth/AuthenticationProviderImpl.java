@@ -1,6 +1,7 @@
 package org.personal.app.framework.auth;
 
 import org.personal.app.commons.auth.Token;
+import org.personal.app.commons.auth.TokenUtils;
 import org.personal.app.framework.request.AppRequest;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
@@ -63,8 +64,14 @@ public class AuthenticationProviderImpl implements AuthenticationProvider, Appli
     }
 
     @Override
-    public void checkToken(Token token) {
-        AuthManager authManager = authManagers.get(token.getGrantType());
+    public Token refreshToken(AuthenticationType type, String tokenStr) {
+        Token token = TokenUtils.checkToken(tokenStr);
+        return refreshToken(type, token);
+    }
+
+    @Override
+    public void checkToken(AuthenticationType type, Token token) {
+        AuthManager authManager = authManagers.get(type);
         if (authManager == null) {
             authManager = authManagers.get(AuthenticationType.NULL_AUTH);
         }

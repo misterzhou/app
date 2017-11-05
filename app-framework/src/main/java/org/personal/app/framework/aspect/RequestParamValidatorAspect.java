@@ -3,7 +3,6 @@ package org.personal.app.framework.aspect;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
-import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.hibernate.validator.internal.engine.path.PathImpl;
 import org.personal.app.commons.AppException;
@@ -31,15 +30,11 @@ import java.util.stream.Collectors;
 @Component
 @Aspect
 @Order(1)
-public class RequestParamValidatorAspect {
+public class RequestParamValidatorAspect extends BasePointCut {
 
-    ParameterNameDiscoverer parameterNameDiscoverer = new LocalVariableTableParameterNameDiscoverer();
+    ParameterNameDiscoverer paramNameDiscoverer = new LocalVariableTableParameterNameDiscoverer();
     private final ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
     private final ExecutableValidator validator = factory.getValidator().forExecutables();
-
-    @Pointcut("execution(* org.personal.app..*Controller.*(..))")
-    public void controller() {
-    }
 
     @Before("controller()")
     public void validateRequestParam(JoinPoint jp) throws Throwable {
@@ -52,7 +47,7 @@ public class RequestParamValidatorAspect {
         }
 
         final boolean hasRequestBody = hasRequestBody(method);
-        String [] methodParamNames = parameterNameDiscoverer.getParameterNames(method);
+        String [] methodParamNames = paramNameDiscoverer.getParameterNames(method);
         List<String> invalidParams = validResult.stream().map(constraintViolation -> {
             PathImpl pathImpl = (PathImpl) constraintViolation.getPropertyPath();
             String paramName = null;

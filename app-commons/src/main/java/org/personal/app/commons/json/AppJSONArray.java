@@ -11,4 +11,8 @@ public class AppJSONArray extends JSONArray {
 
     public AppJSONArray() {}
 
+    public static AppJSONArray newArray() {
+        return new AppJSONArray();
+    }
+
 }

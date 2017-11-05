@@ -14,12 +14,20 @@ public class AppJSONObject extends JSONObject {
     
     public AppJSONObject() {}
 
+    public AppJSONObject(boolean ordered) {
+        super(ordered);
+    }
+
     public AppJSONObject(Map map) {
         super(map);
     }
 
     public static AppJSONObject newObject() {
         return new AppJSONObject();
+    }
+
+    public static AppJSONObject newObject(boolean ordered) {
+        return new AppJSONObject(ordered);
     }
 
     public AppJSONObject getJSONObject(String key) {

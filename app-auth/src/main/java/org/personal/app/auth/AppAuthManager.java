@@ -59,7 +59,8 @@ public class AppAuthManager implements AuthManager {
 
     @Override
     public Token refreshToken(String tokenStr) {
-        return null;
+        Token token = TokenUtils.checkToken(tokenStr);
+        return refreshToken(token);
     }
 
     @Override

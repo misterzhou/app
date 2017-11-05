@@ -11,7 +11,7 @@ import org.personal.app.framework.auth.AuthenticationProvider;
 import org.personal.app.framework.context.RequestContext;
 import org.personal.app.framework.context.ThreadLocalContext;
 import org.personal.app.framework.request.AppRequest;
-import org.personal.app.ratelimit.api.IRateLimitService;
+import org.personal.app.framework.ratelimit.IRateLimitService;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
@@ -52,7 +52,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         //不需要认证的接口不检查token
         if (authType.needAuth()) {
             if (authType.support(authResource.getGrantType())) {
-                authenticationProvider.checkToken(authResource.getToken());
+                authenticationProvider.checkToken(appRequest.getAuthenticationType(), authResource.getToken());
             } else {
                 throw AppException.newInvalidTokenException();
             }

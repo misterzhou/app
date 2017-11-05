@@ -84,7 +84,7 @@ public class User implements AppJSONCodecObject {
 
     @Override
     public AppJSONObject toJSONObject() {
-        AppJSONObject jsonObj = AppJSONObject.newObject();
+        AppJSONObject jsonObj = AppJSONObject.newObject(true);
         jsonObj.put("uid", uid);
         jsonObj.put("username", username);
         jsonObj.put("phone", phone);

@@ -1,6 +1,5 @@
 package org.personal.app.commons.logger;
 
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,10 +13,11 @@ import java.io.StringWriter;
  */
 public class AppLogger {
 
-    private static Logger debugLog = LoggerFactory.getLogger("debug");
-    private static Logger infoLog = LoggerFactory.getLogger("info");
-    private static Logger warnLog = LoggerFactory.getLogger("warn");
-    private static Logger errorLog = LoggerFactory.getLogger("error");
+    public static Logger debugLog = LoggerFactory.getLogger("debug");
+    public static Logger infoLog = LoggerFactory.getLogger("info");
+    public static Logger warnLog = LoggerFactory.getLogger("warn");
+    public static Logger errorLog = LoggerFactory.getLogger("error");
+    public static final Logger API_LOGGER = LoggerFactory.getLogger("api");
 
 
     public static boolean isTraceEnabled() {
@@ -106,6 +106,10 @@ public class AppLogger {
             errorLog.error(formatMsg(msg));
         }
 
+    }
+
+    public static void error(String format, Object... arguments) {
+        errorLog.error(format, arguments);
     }
 
     public static void error(Object msg, Throwable e) {

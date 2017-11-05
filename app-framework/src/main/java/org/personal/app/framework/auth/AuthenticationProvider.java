@@ -16,6 +16,8 @@ public interface AuthenticationProvider {
 
     Token refreshToken(AuthenticationType type, Token token);
 
-    void checkToken(Token token);
+    Token refreshToken(AuthenticationType type, String tokenStr);
+
+    void checkToken(AuthenticationType type, Token token);
 
 }

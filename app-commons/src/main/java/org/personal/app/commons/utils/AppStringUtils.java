@@ -1,6 +1,5 @@
 package org.personal.app.commons.utils;
 
-import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.text.StrBuilder;
 import org.personal.app.commons.logger.AppLogger;

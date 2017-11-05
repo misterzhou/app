@@ -17,6 +17,9 @@ public @interface LimitTimesConfig {
      */
     int value();
 
+    /**
+     * 支持：DAYS, HOURS, MINUTES
+     */
     TimeUnit timeUnit() default TimeUnit.HOURS;
 
 }

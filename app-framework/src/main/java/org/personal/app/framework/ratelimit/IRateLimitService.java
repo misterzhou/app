@@ -1,4 +1,4 @@
-package org.personal.app.ratelimit.api;
+package org.personal.app.framework.ratelimit;
 
 import org.personal.app.framework.apiprops.RateLimit;
 import org.personal.app.framework.context.RequestContext;

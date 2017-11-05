@@ -44,8 +44,8 @@
         </layout>
     </appender>
 
-    <appender name="command-result-file" class="org.apache.log4j.DailyRollingFileAppender">
-        <param name="File" value="/logs/server/command-result.log"/>
+    <appender name="api-file" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="/logs/server/api.log"/>
         <param name="Encoding" value="UTF-8"/>
         <param name="ImmediateFlush" value="true"/>
         <layout class="org.apache.log4j.PatternLayout">
@@ -74,6 +74,11 @@
         <level value="error"/>
         <appender-ref ref="console"/>
         <appender-ref ref="error-file"/>
+    </logger>
+
+    <logger name="api" additivity="false">
+        <level value="info"/>
+        <appender-ref ref="api-file"/>
     </logger>
 
     <root>

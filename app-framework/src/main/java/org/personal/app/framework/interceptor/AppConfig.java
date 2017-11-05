@@ -1,7 +1,6 @@
 package org.personal.app.framework.interceptor;
 
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
@@ -20,8 +19,6 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        InterceptorRegistration ir = registry.addInterceptor(authInterceptor);
-        ir.addPathPatterns("/**");
-        ir.excludePathPatterns("/error");
+        registry.addInterceptor(authInterceptor).addPathPatterns("/**").excludePathPatterns("/error");
     }
 }

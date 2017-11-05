@@ -8,9 +8,12 @@ import org.personal.app.commons.auth.TokenUtils;
 import org.personal.app.framework.apiprops.*;
 import org.personal.app.framework.context.RequestContext;
 import org.personal.app.user.model.User;
+import org.personal.app.user.service.IUserService;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -21,6 +24,9 @@ import java.util.concurrent.TimeUnit;
 @RestController
 @RequestMapping("/user")
 public class UserController {
+
+    @Resource
+    IUserService userService;
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @BaseInfo(desc = "用户登录", status = ApiStatus.PUBLIC, authType = AuthType.anonymous)
@@ -46,15 +52,23 @@ public class UserController {
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     @BaseInfo(desc = "更新用户信息", status = ApiStatus.PUBLIC, authType = AuthType.anonymous)
     public User update(RequestContext rc, @RequestBody @Valid User user) {
-        return user;
+        return userService.update(user);
     }
 
-    @RequestMapping(value = "/test", method = RequestMethod.POST)
+    @RequestMapping(value = "/test/{uid}", method = RequestMethod.POST)
     @BaseInfo(desc = "test", status = ApiStatus.PUBLIC, authType = AuthType.anonymous)
-    public JSONObject test(RequestContext rc, @RequestParam @Length(min = 5, max = 10) String uid, @RequestParam(defaultValue = "0") @Range(min = 0, max = 50) int age) {
+    public JSONObject test(
+            RequestContext rc,
+            @PathVariable @Length(min = 5, max = 10) String uid,
+            @RequestParam(defaultValue = "0") @Range(min = 0, max = 50) int age,
+            @RequestParam(required = false) String[] emails,
+            @RequestParam(required = false) List<Integer> phones
+    ) {
         JSONObject result = new JSONObject();
         result.put("uid", uid);
         result.put("age", age);
+        result.put("email", emails);
+        result.put("phones", phones);
         return result;
     }
 
